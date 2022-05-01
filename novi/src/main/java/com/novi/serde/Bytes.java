@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * Immutable wrapper class around byte[].
- *
+ * <p>
  * Enforces value-semantice for `equals` and `hashCode`.
  */
 public final class Bytes {

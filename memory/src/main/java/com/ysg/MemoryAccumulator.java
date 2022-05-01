@@ -16,7 +16,7 @@ public class MemoryAccumulator {
         // XXX FIXME
     }
 
-    public int  getProofFromLeaves(List<HashValue> leaves, Long leafIndex, List<HashValue> siblings) {
+    public int getProofFromLeaves(List<HashValue> leaves, Long leafIndex, List<HashValue> siblings) {
         // XXX FIXME
         return 0;
     }

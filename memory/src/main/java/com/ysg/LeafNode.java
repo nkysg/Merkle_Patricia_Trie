@@ -1,6 +1,6 @@
 package com.ysg;
 
-public class LeafNode  {
+public class LeafNode {
     private HashValue hash;
     private Long index;
 
