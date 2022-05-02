@@ -1,24 +1,24 @@
 package com.ysg;
 
-import java.lang.management.MemoryNotificationInfo;
 import java.util.List;
 
 public class MemoryAccumulator {
     List<HashValue> frozenSubtreeRoots;
-    Long numLeaves;
-    HashValue root_hash;
+    long numLeaves;
+    HashValue rootHash;
 
-    public MemoryAccumulator(List<HashValue> frozenSubtreeRoots, Long numLeaves) {
+    public MemoryAccumulator(List<HashValue> frozenSubtreeRoots, long numLeaves) {
         this.frozenSubtreeRoots = frozenSubtreeRoots;
     }
 
     public static MemoryAccumulator fromLeaves(List<HashValue> leaves) {
         // XXX FIXME
+        return new MemoryAccumulator(null, 0);
     }
 
-    public int getProofFromLeaves(List<HashValue> leaves, Long leafIndex, List<HashValue> siblings) {
+    public ErrorInfo getProofFromLeaves(List<HashValue> leaves, long leafIndex, List<HashValue> siblings) {
         // XXX FIXME
-        return 0;
+        return ErrorInfo.OK;
     }
 
     private HashValue hashInternalNode(HashValue left, HashValue right) {
@@ -32,14 +32,28 @@ public class MemoryAccumulator {
 
     private HashValue getHash(List<HashValue> leaves, Long nodeIndex) {
         // XXX FIXME
+        return HashValue.zero();
     }
 
-    public void append(List<HashValue> leaves) {
-
-    }
-
-    private void appendOne(List<HashValue> frozenSubtreeRoots, Long numExistingLeaves, HashValue leaf) {
+    public ErrorInfo append(List<HashValue> leaves) {
         // XXX FIXME
+        return ErrorInfo.OK;
+    }
+
+    private ErrorInfo appendOne(List<HashValue> frozenSubtreeRoots, Long numExistingLeaves, HashValue leaf) {
+        // XXX FIXME
+        return ErrorInfo.OK;
+    }
+
+
+
+    public ErrorInfo appendSubtrees(List<HashValue> subtrees, Long numNewLeaves) {
+        // XXX FIXME
+        return ErrorInfo.OK;
+    }
+
+    public HashValue getRootHash() {
+        return rootHash;
     }
 
     public Long version() {
@@ -50,11 +64,13 @@ public class MemoryAccumulator {
         }
     }
 
-    public Long getNumLeaves() {
-        return numLeaves;
-    }
+
 
     public List<HashValue> getFrozenSubtreeRoots() {
         return frozenSubtreeRoots;
+    }
+
+    public long getNumLeaves() {
+        return numLeaves;
     }
 }
