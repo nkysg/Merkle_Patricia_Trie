@@ -1,10 +1,24 @@
 package com.ysg;
 
+import com.novi.serde.Bytes;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 
 public final class HashValue {
 
     public static final int LENGTH = 32;
+    public static HashValue hashZero;
+    public static HashValue hashPlaceholder;
+    static {
+        byte[] val = new byte[LENGTH];
+        hashZero = new HashValue(new Bytes(val));
+
+        byte[] str = "ACCUMULATOR_PLACEHOLDER_HASH".getBytes();
+        System.out.println("str" + str.length);
+        assert  str.length <= LENGTH;
+        byte[] val2 = new byte[LENGTH];
+        System.arraycopy(val2, 0, str, 0, str.length);
+        hashPlaceholder = new HashValue(new Bytes(val2));
+    }
 
     public final com.novi.serde.Bytes value;
 
@@ -14,8 +28,12 @@ public final class HashValue {
     }
 
     public static HashValue zero() {
-        byte[] val = new byte[LENGTH];
-        return new HashValue(com.novi.serde.Bytes.valueOf(val));
+
+        return hashZero;
+    }
+
+    public static HashValue placeholder() {
+        return hashPlaceholder;
     }
 
     public static HashValue sha3Of(byte[] content) {
