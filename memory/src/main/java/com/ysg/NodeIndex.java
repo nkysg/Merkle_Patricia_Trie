@@ -1,7 +1,5 @@
 package com.ysg;
 
-import org.w3c.dom.Node;
-
 /***
  * NodeIndex is in-order-traversel
  *
@@ -20,9 +18,9 @@ import org.w3c.dom.Node;
  * //! Note2: The level of tree counts from leaf level, start from 0
  * //! Note3: The leaf index starting from left-most leaf, starts from 0
  */
-public class NodeIndex {
+public final class NodeIndex {
     public final int MaxAccumulatorProofLength = 63;
-    private long inOrderIndex;
+    private final long inOrderIndex;
 
     public NodeIndex(long val) {
         this.inOrderIndex = val;
@@ -62,7 +60,7 @@ public class NodeIndex {
     }
 
     /// pos count start from 0 on each level
-    public NodeIndex fromLevelAndPos(int level, long pos) {
+    public static NodeIndex fromLevelAndPos(int level, long pos) {
         assert level < 63;
         assert (1L << level) > 0;
         long levelOneBits = (1L << level) - 1;
@@ -70,11 +68,11 @@ public class NodeIndex {
         return new NodeIndex(levelOneBits | shiftPos);
     }
 
-    public NodeIndex fromLeafIndex(long leafIndex) {
+    public static NodeIndex fromLeafIndex(long leafIndex) {
         return fromLevelAndPos(0, leafIndex);
     }
 
-    public NodeIndex fromInorderIndex(long inOrderIndex) {
+    public static NodeIndex fromInorderIndex(long inOrderIndex) {
         return new NodeIndex(inOrderIndex);
     }
 
@@ -89,11 +87,11 @@ public class NodeIndex {
     ///     -------
     ///     0001111(root)
     /// ```
-    public NodeIndex rootFromLeafIndex(long leafIndex) {
+    public static NodeIndex rootFromLeafIndex(long leafIndex) {
         return new NodeIndex(smearOnes(leafIndex));
     }
 
-    public NodeIndex rootFromLeafCount(long leafCount) {
+    public static NodeIndex rootFromLeafCount(long leafCount) {
         assert leafCount > 0;
         return rootFromLeafIndex(leafCount - 1);
     }
@@ -118,7 +116,7 @@ public class NodeIndex {
         return new NodeIndex(inOrderIndex + (1L << level) - 1);
     }
 
-    public boolean isPlaceHolder(long leafIndex) {
+    public boolean isPlaceholder(long leafIndex) {
         NodeIndex leaf = fromLeafIndex(leafIndex);
         if (getInOrderIndex() <= leaf.getInOrderIndex()) {
             return false;
@@ -137,7 +135,7 @@ public class NodeIndex {
 
     /// Creates an `AncestorSiblingIterator` using this node_index.
     public AncestorSiblingIterator iterAncestorSibling() {
-        new AncestorSiblingIterator(this);
+        return new AncestorSiblingIterator(this);
     }
 
 
@@ -154,7 +152,7 @@ public class NodeIndex {
 
     public NodeIndex child(NodeDirection dir) {
 
-        long direction_bit = 0;
+        long direction_bit;
         if (dir == NodeDirection.Left) {
             direction_bit = 0;
         } else {
@@ -177,13 +175,6 @@ public class NodeIndex {
     /// after stripping out all right-most 1 bits, a left child will have a bit pattern
     /// of xxx00(11..), while a right child will be represented by xxx10(11..)
     public boolean isLeftChild() {
-
-        /*
-        pub fn is_left_child(self) ->bool {
-            assume !(self .0 < u64::max_value () - 1); // invariant
-            self .0 & (isolate_rightmost_zero_bit(self .0) <<1) ==0
-        } */
-        // XXX FIXME
        return (inOrderIndex & (isolateRightmostZeroBit(inOrderIndex) << 1)) == 0;
     }
 
